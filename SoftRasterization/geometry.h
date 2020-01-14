@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 #include "coordinate.h"
 
 //=====================================================================
-// ¼¸ºÎ¼ÆËã£º¶¥µã¡¢É¨ÃèÏß¡¢±ßÔµ¡¢¾ØÐÎ¡¢²½³¤¼ÆËã
+// å‡ ä½•è®¡ç®—ï¼šé¡¶ç‚¹ã€æ‰«æçº¿ã€è¾¹ç¼˜ã€çŸ©å½¢ã€æ­¥é•¿è®¡ç®—
 //=====================================================================
 typedef struct { float r, g, b; } color_t;
 typedef struct { float u, v; } texcoord_t;
@@ -23,7 +23,7 @@ void vertex_rhw_init (vertex_t *v) {
 	v->color.g *= rhw;
 	v->color.b *= rhw;
 }
-// ÔÚ¶¥µã x1 ºÍ x2 Ö®¼ä½øÐÐ t Î»ÖÃÉÏµÄ²åÖµ£¬½á¹û´æ´¢ÔÚ¶¥µã y ÖÐ£¬°üÀ¨ 4 Î¬Î»ÖÃ¡¢UV ×ø±ê¡¢RGB ÑÕÉ«¡¢RHW
+// åœ¨é¡¶ç‚¹ x1 å’Œ x2 ä¹‹é—´è¿›è¡Œ t ä½ç½®ä¸Šçš„æ’å€¼ï¼Œç»“æžœå­˜å‚¨åœ¨é¡¶ç‚¹ y ä¸­ï¼ŒåŒ…æ‹¬ 4 ç»´ä½ç½®ã€UV åæ ‡ã€RGB é¢œè‰²ã€RHW
 void vertex_interp (vertex_t *y, const vertex_t *x1, const vertex_t *x2, float t) {
 	vector_interp (&y->pos, &x1->pos, &x2->pos, t);
 	y->tc.u = interp (x1->tc.u, x2->tc.u, t);
@@ -61,13 +61,13 @@ void vertex_add (vertex_t *y, const vertex_t *x) {
 	y->color.b += x->color.b;
 }
 
-// ¸ù¾ÝÈý½ÇÐÎÉú³É 0-2 ¸öÌÝÐÎ£¬²¢ÇÒ·µ»ØºÏ·¨ÌÝÐÎµÄÊýÁ¿
+// æ ¹æ®ä¸‰è§’å½¢ç”Ÿæˆ 0-2 ä¸ªæ¢¯å½¢ï¼Œå¹¶ä¸”è¿”å›žåˆæ³•æ¢¯å½¢çš„æ•°é‡
 int trapezoid_init_triangle (trapezoid_t *trap, const vertex_t *p1,
 	const vertex_t *p2, const vertex_t *p3) {
 	const vertex_t *p;
 	float k, x;
 
-	// Èý½ÇÐÎ¶¥µã°´×Ý×ø±êÓÉÐ¡µ½´óÅÅÁÐ
+	// ä¸‰è§’å½¢é¡¶ç‚¹æŒ‰çºµåæ ‡ç”±å°åˆ°å¤§æŽ’åˆ—
 	if (p1->pos.y > p2->pos.y) p = p1, p1 = p2, p2 = p;
 	if (p1->pos.y > p3->pos.y) p = p1, p1 = p3, p3 = p;
 	if (p2->pos.y > p3->pos.y) p = p2, p2 = p3, p3 = p;
@@ -127,7 +127,7 @@ int trapezoid_init_triangle (trapezoid_t *trap, const vertex_t *p1,
 	return 2;
 }
 
-// °´ÕÕ Y ×ø±ê¼ÆËã³ö×óÓÒÁ½Ìõ±ß×Ý×ø±êµÈÓÚ Y µÄ¶¥µã
+// æŒ‰ç…§ Y åæ ‡è®¡ç®—å‡ºå·¦å³ä¸¤æ¡è¾¹çºµåæ ‡ç­‰äºŽ Y çš„é¡¶ç‚¹
 void trapezoid_edge_interp (trapezoid_t *trap, float y) {
 	float s1 = trap->left.v2.pos.y - trap->left.v1.pos.y;
 	float s2 = trap->right.v2.pos.y - trap->right.v1.pos.y;
@@ -137,8 +137,8 @@ void trapezoid_edge_interp (trapezoid_t *trap, float y) {
 	vertex_interp (&trap->right.v, &trap->right.v1, &trap->right.v2, t2);
 }
 
-// ¸ù¾Ý×óÓÒÁ½±ßµÄ¶Ëµã£¬³õÊ¼»¯¼ÆËã³öÉ¨ÃèÏßµÄÆðµãºÍ²½³¤
-// ½á¹û´æ´¢ÔÚ scanline
+// æ ¹æ®å·¦å³ä¸¤è¾¹çš„ç«¯ç‚¹ï¼Œåˆå§‹åŒ–è®¡ç®—å‡ºæ‰«æçº¿çš„èµ·ç‚¹å’Œæ­¥é•¿
+// ç»“æžœå­˜å‚¨åœ¨ scanline
 void trapezoid_init_scan_line (const trapezoid_t *trap, scanline_t *scanline, int y) {
 	float width = trap->right.v.pos.x - trap->left.v.pos.x;
 	scanline->x = (int)(trap->left.v.pos.x + 0.5f);

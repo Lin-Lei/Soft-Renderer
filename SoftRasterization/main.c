@@ -23,7 +23,7 @@
 #define MAXRGBBYTE 260*260
 
 //=====================================================================
-// Ö÷³ÌÐò
+// ä¸»ç¨‹åº
 //=====================================================================
 vertex_t mesh[8] = {
 	{ { 1, -1,  1, 1 },{ 0, 0 },{ 1.0f, 0.2f, 0.2f }, 1 },
@@ -46,7 +46,7 @@ void draw_plane(device_t *device, int a, int b, int c, int d) {
 
 void draw_box(device_t *device, float theta) {
 	matrix_t m;
-	matrix_set_rotate(&m, -1, -0.5, 1, theta); // ÈÆ×ÅÖá (-1£¬-0.5£¬1) Ðý×ª theta
+	matrix_set_rotate(&m, -1, -0.5, 1, theta); // ç»•ç€è½´ (-1ï¼Œ-0.5ï¼Œ1) æ—‹è½¬ theta
 	device->transform.world = m;
 	transform_update(&device->transform);
 	draw_plane(device, 0, 1, 2, 3);
@@ -116,8 +116,7 @@ int main(void) {
 	float alpha = 0;
 	float pos = 3.5;
 
-	TCHAR *title = _T("Mini3d (software render tutorial) - ")
-		_T("Left/Right: rotation, Up/Down: forward/backward, Space: switch state");
+	TCHAR *title = _T("SoftRasterization");
 
 	if (screen_init(800, 600, title))
 		return -1;

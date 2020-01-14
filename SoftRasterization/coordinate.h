@@ -1,27 +1,27 @@
-#pragma once
+ï»¿#pragma once
 
 #include "math.h"
 
 //=====================================================================
-// ×ø±ê±ä»»
+// åæ ‡å˜æ¢
 //=====================================================================
 typedef struct {
-	matrix_t world;         // ÊÀ½ç×ø±ê±ä»»
-	matrix_t view;          // ÉãÓ°»ú×ø±ê±ä»»
-	matrix_t projection;    // Í¶Ó°±ä»»
+	matrix_t world;         // ä¸–ç•Œåæ ‡å˜æ¢
+	matrix_t view;          // æ‘„å½±æœºåæ ‡å˜æ¢
+	matrix_t projection;    // æŠ•å½±å˜æ¢
 	matrix_t transform;     // transform = world * view * projection
-	float w, h;             // ÆÁÄ»´óÐ¡
+	float w, h;             // å±å¹•å¤§å°
 }	transform_t;
 
 
-// ¾ØÕó¸üÐÂ£¬¼ÆËã transform = world * view * projection
+// çŸ©é˜µæ›´æ–°ï¼Œè®¡ç®— transform = world * view * projection
 void transform_update (transform_t *ts) {
 	matrix_t m;
 	matrix_mul (&m, &ts->world, &ts->view);
 	matrix_mul (&ts->transform, &m, &ts->projection);
 }
 
-// ³õÊ¼»¯£¬ÉèÖÃÆÁÄ»³¤¿í
+// åˆå§‹åŒ–ï¼Œè®¾ç½®å±å¹•é•¿å®½
 void transform_init (transform_t *ts, int width, int height) {
 	float aspect = (float)width / ((float)height);
 	matrix_set_identity (&ts->world);
@@ -32,12 +32,12 @@ void transform_init (transform_t *ts, int width, int height) {
 	transform_update (ts);
 }
 
-// ½«Ê¸Á¿ x ½øÐÐ project 
+// å°†çŸ¢é‡ x è¿›è¡Œ project 
 void transform_apply (const transform_t *ts, vector_t *y, const vector_t *x) {
 	matrix_apply (y, x, &ts->transform);
 }
 
-// ¼ì²éÆë´Î×ø±êÍ¬ cvv µÄ±ß½çÓÃÓÚÊÓ×¶²Ã¼ô
+// æ£€æŸ¥é½æ¬¡åæ ‡åŒ cvv çš„è¾¹ç•Œç”¨äºŽè§†é”¥è£å‰ª
 int transform_check_cvv (const vector_t *v) {
 	float w = v->w;
 	int check = 0;
@@ -50,7 +50,7 @@ int transform_check_cvv (const vector_t *v) {
 	return check;
 }
 
-// ¹éÒ»»¯£¬µÃµ½ÆÁÄ»×ø±ê
+// å½’ä¸€åŒ–ï¼Œå¾—åˆ°å±å¹•åæ ‡
 void transform_homogenize (const transform_t *ts, vector_t *y, const vector_t *x) {
 	float rhw = 1.0f / x->w;
 	y->x = (x->x * rhw + 1.0f) * ts->w * 0.5f;

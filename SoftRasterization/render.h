@@ -3,10 +3,10 @@
 #include "device.h"
 
 //=====================================================================
-// äÖÈ¾ÊµÏÖ
+// æ¸²æŸ“å®ç°
 //=====================================================================
 
-// »æÖÆÉ¨ÃèÏß
+// ç»˜åˆ¶æ‰«æçº¿
 void device_draw_scanline (device_t *device, scanline_t *scanline, float diffuse) {
 	IUINT32 *framebuffer = device->framebuffer[scanline->y];
 	float *zbuffer = device->zbuffer[scanline->y];
@@ -45,7 +45,7 @@ void device_draw_scanline (device_t *device, scanline_t *scanline, float diffuse
 	}
 }
 
-// Ö÷äÖÈ¾º¯Êı
+// ä¸»æ¸²æŸ“å‡½æ•°
 void device_render_trap (device_t *device, trapezoid_t *trap, float diffuse) {
 	scanline_t scanline;
 	int j, top, bottom;
@@ -57,8 +57,8 @@ void device_render_trap (device_t *device, trapezoid_t *trap, float diffuse) {
 			trapezoid_init_scan_line (trap, &scanline, j);
 			device_draw_scanline (device, &scanline, diffuse);
 		}
-		// ´óÓÚ height ¾Í²»ÓÃÔÙ»­ÁË£¬ºó±ßÒ»¶¨¶¼ÔÚÆÁÄ»Íâ£¬Ö±½Ó break ¾ÍºÃ
-		// µ«ÊÇĞ¡ÓÚ 0 »¹Òª¼ÌĞøÏòÏÂÅĞ¶Ï£¬²»ÄÜ break
+		// å¤§äº height å°±ä¸ç”¨å†ç”»äº†ï¼Œåè¾¹ä¸€å®šéƒ½åœ¨å±å¹•å¤–ï¼Œç›´æ¥ break å°±å¥½
+		// ä½†æ˜¯å°äº 0 è¿˜è¦ç»§ç»­å‘ä¸‹åˆ¤æ–­ï¼Œä¸èƒ½ break
 		if (j >= device->height) break;
 	}
 }
@@ -78,7 +78,7 @@ float calculate_diffuse(point_t *p1, point_t *p2, point_t *p3) {
 	return diffuse<0 ? -diffuse : 0;
 }
 
-// ¸ù¾İ render_state »æÖÆÔ­Ê¼Èı½ÇĞÎ
+// æ ¹æ® render_state ç»˜åˆ¶åŸå§‹ä¸‰è§’å½¢
 void device_draw_primitive (device_t *device, const vertex_t *v1,
 	const vertex_t *v2, const vertex_t *v3, int depth) {
 	if (depth > 5) { return; }
@@ -86,13 +86,13 @@ void device_draw_primitive (device_t *device, const vertex_t *v1,
 	int render_state = device->render_state;
 
 	float diffuse = calculate_diffuse(&v1->pos, &v2->pos, &v3->pos);
-	// °´ÕÕ Transform ±ä»¯
+	// æŒ‰ç…§ Transform å˜åŒ–
 	transform_apply (&device->transform, &c1, &v1->pos);
 	transform_apply (&device->transform, &c2, &v2->pos);
 	transform_apply (&device->transform, &c3, &v3->pos);
 
-	// ²Ã¼ô£¬×¢Òâ´Ë´¦¿ÉÒÔÍêÉÆÎª¾ßÌåÅĞ¶Ï¼¸¸öµãÔÚ cvvÄÚÒÔ¼°Í¬cvvÏà½»Æ½ÃæµÄ×ø±ê±ÈÀı
-	// ½øĞĞ½øÒ»²½¾«Ï¸²Ã¼ô£¬½«Ò»¸ö·Ö½âÎª¼¸¸öÍêÈ«´¦ÔÚ cvvÄÚµÄÈı½ÇĞÎ
+	// è£å‰ªï¼Œæ³¨æ„æ­¤å¤„å¯ä»¥å®Œå–„ä¸ºå…·ä½“åˆ¤æ–­å‡ ä¸ªç‚¹åœ¨ cvvå†…ä»¥åŠåŒcvvç›¸äº¤å¹³é¢çš„åæ ‡æ¯”ä¾‹
+	// è¿›è¡Œè¿›ä¸€æ­¥ç²¾ç»†è£å‰ªï¼Œå°†ä¸€ä¸ªåˆ†è§£ä¸ºå‡ ä¸ªå®Œå…¨å¤„åœ¨ cvvå†…çš„ä¸‰è§’å½¢
 	int flag[3];
 	if (transform_check_cvv(&c1) != 0) { flag[0] = 0; }
 	else { flag[0] = 1; }
@@ -101,7 +101,7 @@ void device_draw_primitive (device_t *device, const vertex_t *v1,
 	if (transform_check_cvv(&c3) != 0) { flag[2] = 0; }
 	else { flag[2] = 1; }
 	if (flag[0] + flag[1] + flag[2] < 3) {
-		//return;
+		return;
 		vertex_t vv1, vv2, vv3;
 		if (depth > 5) {
 			if (flag[0]) {
@@ -142,12 +142,12 @@ void device_draw_primitive (device_t *device, const vertex_t *v1,
 		return;
 	}
 
-	// ¹éÒ»»¯
+	// å½’ä¸€åŒ–
 	transform_homogenize (&device->transform, &p1, &c1);
 	transform_homogenize (&device->transform, &p2, &c2);
 	transform_homogenize (&device->transform, &p3, &c3);
 
-	// ÎÆÀí»òÕßÉ«²Ê»æÖÆ
+	// çº¹ç†æˆ–è€…è‰²å½©ç»˜åˆ¶
 	if (render_state & (RENDER_STATE_TEXTURE | RENDER_STATE_COLOR)) {
 		vertex_t t1 = *v1, t2 = *v2, t3 = *v3;
 		trapezoid_t traps[2];
@@ -160,19 +160,19 @@ void device_draw_primitive (device_t *device, const vertex_t *v1,
 		t2.pos.w = c2.w;
 		t3.pos.w = c3.w;
 
-		vertex_rhw_init (&t1);	// ³õÊ¼»¯ w
-		vertex_rhw_init (&t2);	// ³õÊ¼»¯ w
-		vertex_rhw_init (&t3);	// ³õÊ¼»¯ w
+		vertex_rhw_init (&t1);	// åˆå§‹åŒ– w
+		vertex_rhw_init (&t2);	// åˆå§‹åŒ– w
+		vertex_rhw_init (&t3);	// åˆå§‹åŒ– w
 
-								// ²ğ·ÖÈı½ÇĞÎÎª0-2¸öÌİĞÎ£¬²¢ÇÒ·µ»Ø¿ÉÓÃÌİĞÎÊıÁ¿
+								// æ‹†åˆ†ä¸‰è§’å½¢ä¸º0-2ä¸ªæ¢¯å½¢ï¼Œå¹¶ä¸”è¿”å›å¯ç”¨æ¢¯å½¢æ•°é‡
 		n = trapezoid_init_triangle (traps, &t1, &t2, &t3);
 
-		// ÒÀ´Î»æÖÆÌİĞÎ
+		// ä¾æ¬¡ç»˜åˆ¶æ¢¯å½¢
 		if (n >= 1) device_render_trap (device, &traps[0], diffuse);
 		if (n >= 2) device_render_trap (device, &traps[1], diffuse);
 	}
 
-	if (render_state & RENDER_STATE_WIREFRAME) {		// Ïß¿ò»æÖÆ
+	if (render_state & RENDER_STATE_WIREFRAME) {		// çº¿æ¡†ç»˜åˆ¶
 		device_draw_line (device, (int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y, device->foreground);
 		device_draw_line (device, (int)p1.x, (int)p1.y, (int)p3.x, (int)p3.y, device->foreground);
 		device_draw_line (device, (int)p3.x, (int)p3.y, (int)p2.x, (int)p2.y, device->foreground);

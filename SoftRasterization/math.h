@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #include <math.h>
 
 typedef unsigned int IUINT32;
 
 //=====================================================================
-// ÊıÑ§¿â£º´Ë²¿·ÖÓ¦¸Ã²»ÓÃÏê½â£¬ÊìÏ¤ D3D ¾ØÕó±ä»»¼´¿É
+// æ•°å­¦åº“ï¼šæ­¤éƒ¨åˆ†åº”è¯¥ä¸ç”¨è¯¦è§£ï¼Œç†Ÿæ‚‰ D3D çŸ©é˜µå˜æ¢å³å¯
 //=====================================================================
 typedef struct { float m[4][4]; } matrix_t;
 typedef struct { float x, y, z, w; } vector_t;
@@ -13,8 +13,8 @@ typedef vector_t point_t;
 
 int CMID (int x, int min, int max) { return (x < min) ? min : ((x > max) ? max : x); }
 
-// ¼ÆËã²åÖµ£ºt Îª [0, 1] Ö®¼äµÄÊıÖµ
-// x1 ~ x2 Ö®¼ä²åÖµ£¬²½³¤Îª t
+// è®¡ç®—æ’å€¼ï¼št ä¸º [0, 1] ä¹‹é—´çš„æ•°å€¼
+// x1 ~ x2 ä¹‹é—´æ’å€¼ï¼Œæ­¥é•¿ä¸º t
 float interp (float x1, float x2, float t) { return x1 + (x2 - x1) * t; }
 
 // | v |
@@ -39,12 +39,12 @@ void vector_sub (vector_t *z, const vector_t *x, const vector_t *y) {
 	z->w = 1.0;
 }
 
-// Ê¸Á¿µã³Ë
+// çŸ¢é‡ç‚¹ä¹˜
 float vector_dotproduct (const vector_t *x, const vector_t *y) {
 	return x->x * y->x + x->y * y->y + x->z * y->z;
 }
 
-// Ê¸Á¿²æ³Ë
+// çŸ¢é‡å‰ä¹˜
 void vector_crossproduct (vector_t *z, const vector_t *x, const vector_t *y) {
 	float m1, m2, m3;
 	m1 = x->y * y->z - x->z * y->y;
@@ -56,8 +56,8 @@ void vector_crossproduct (vector_t *z, const vector_t *x, const vector_t *y) {
 	z->w = 1.0f;
 }
 
-// Ê¸Á¿²åÖµ£¬tÈ¡Öµ [0, 1]
-// ·Ö±ğÔÚÏòÁ¿ x1 ºÍ x2 µÄ xyz Èı·ÖÁ¿ÉÏ½øĞĞ t Î»ÖÃÉÏµÄµÄ²åÖµ£¬½á¹û´æ´¢ÔÚ z ÖĞ
+// çŸ¢é‡æ’å€¼ï¼Œtå–å€¼ [0, 1]
+// åˆ†åˆ«åœ¨å‘é‡ x1 å’Œ x2 çš„ xyz ä¸‰åˆ†é‡ä¸Šè¿›è¡Œ t ä½ç½®ä¸Šçš„çš„æ’å€¼ï¼Œç»“æœå­˜å‚¨åœ¨ z ä¸­
 void vector_interp (vector_t *z, const vector_t *x1, const vector_t *x2, float t) {
 	z->x = interp (x1->x, x2->x, t);
 	z->y = interp (x1->y, x2->y, t);
@@ -65,7 +65,7 @@ void vector_interp (vector_t *z, const vector_t *x1, const vector_t *x2, float t
 	z->w = 1.0f;
 }
 
-// Ê¸Á¿¹éÒ»»¯
+// çŸ¢é‡å½’ä¸€åŒ–
 void vector_normalize (vector_t *v) {
 	float length = vector_length (v);
 	if (length != 0.0f) {
@@ -142,7 +142,7 @@ void matrix_set_zero (matrix_t *m) {
 	m->m[3][0] = m->m[3][1] = m->m[3][2] = m->m[3][3] = 0.0f;
 }
 
-// Æ½ÒÆ±ä»»
+// å¹³ç§»å˜æ¢
 void matrix_set_translate (matrix_t *m, float x, float y, float z) {
 	matrix_set_identity (m);
 	m->m[3][0] = x;
@@ -150,7 +150,7 @@ void matrix_set_translate (matrix_t *m, float x, float y, float z) {
 	m->m[3][2] = z;
 }
 
-// Ëõ·Å±ä»»
+// ç¼©æ”¾å˜æ¢
 void matrix_set_scale (matrix_t *m, float x, float y, float z) {
 	matrix_set_identity (m);
 	m->m[0][0] = x;
@@ -158,7 +158,7 @@ void matrix_set_scale (matrix_t *m, float x, float y, float z) {
 	m->m[2][2] = z;
 }
 
-// Ğı×ª¾ØÕó
+// æ—‹è½¬çŸ©é˜µ
 void matrix_set_rotate (matrix_t *m, float x, float y, float z, float theta) {
 	float qsin = (float)sin (theta * 0.5f);
 	float qcos = (float)cos (theta * 0.5f);
@@ -182,7 +182,7 @@ void matrix_set_rotate (matrix_t *m, float x, float y, float z, float theta) {
 	m->m[3][3] = 1.0f;
 }
 
-// ÉèÖÃÉãÏñ»ú
+// è®¾ç½®æ‘„åƒæœº
 void matrix_set_lookat (matrix_t *m, const vector_t *eye, const vector_t *at, const vector_t *up) {
 	vector_t xaxis, yaxis, zaxis;
 

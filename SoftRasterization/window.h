@@ -1,24 +1,24 @@
-#pragma once
+ï»¿#pragma once
 
 #include <windows.h>
 
 //=====================================================================
-// Win32 ´°¿Ú¼°Í¼ĞÎ»æÖÆ£ºÎª device Ìá¹©Ò»¸ö DibSection µÄ FB
+// Win32 çª—å£åŠå›¾å½¢ç»˜åˆ¶ï¼šä¸º device æä¾›ä¸€ä¸ª DibSection çš„ FB
 //=====================================================================
 int screen_w, screen_h, screen_exit = 0;
 int screen_mx = 0, screen_my = 0, screen_mb = 0;
-int screen_keys[512];	// µ±Ç°¼üÅÌ°´ÏÂ×´Ì¬
-static HWND screen_handle = NULL;		// Ö÷´°¿Ú HWND
-static HDC screen_dc = NULL;			// ÅäÌ×µÄ HDC
+int screen_keys[512];	// å½“å‰é”®ç›˜æŒ‰ä¸‹çŠ¶æ€
+static HWND screen_handle = NULL;		// ä¸»çª—å£ HWND
+static HDC screen_dc = NULL;			// é…å¥—çš„ HDC
 static HBITMAP screen_hb = NULL;		// DIB
-static HBITMAP screen_ob = NULL;		// ÀÏµÄ BITMAP
+static HBITMAP screen_ob = NULL;		// è€çš„ BITMAP
 unsigned char *screen_fb = NULL;		// frame buffer
 long screen_pitch = 0;
 
-int screen_init (int w, int h, const TCHAR *title);	// ÆÁÄ»³õÊ¼»¯
-int screen_close (void);								// ¹Ø±ÕÆÁÄ»
-void screen_dispatch (void);							// ´¦ÀíÏûÏ¢
-void screen_update (void);							// ÏÔÊ¾ FrameBuffer
+int screen_init (int w, int h, const TCHAR *title);	// å±å¹•åˆå§‹åŒ–
+int screen_close (void);								// å…³é—­å±å¹•
+void screen_dispatch (void);							// å¤„ç†æ¶ˆæ¯
+void screen_update (void);							// æ˜¾ç¤º FrameBuffer
 
 													// win32 event handler
 static LRESULT screen_events (HWND, UINT, WPARAM, LPARAM);
@@ -28,7 +28,7 @@ static LRESULT screen_events (HWND, UINT, WPARAM, LPARAM);
 #pragma comment(lib, "user32.lib")
 #endif
 
-// ³õÊ¼»¯´°¿Ú²¢ÉèÖÃ±êÌâ
+// åˆå§‹åŒ–çª—å£å¹¶è®¾ç½®æ ‡é¢˜
 int screen_init (int w, int h, const TCHAR *title) {
 	WNDCLASS wc = { CS_BYTEALIGNCLIENT, (WNDPROC)screen_events, 0, 0, 0,
 		NULL, NULL, NULL, NULL, _T ("SCREEN3.1415926") };

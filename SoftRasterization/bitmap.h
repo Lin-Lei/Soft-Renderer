@@ -1,13 +1,13 @@
-#pragma once
+ï»¿#pragma once
 
 #include <stdio.h>
 #include <malloc.h>
 
-#define BM 19778		// Î»Í¼µÄ±êÖ¾
+#define BM 19778		// ä½å›¾çš„æ ‡å¿—
 
-#define PATH "texture.bmp"  //´ò¿ªµÄÎÄ¼şÂ·¾¶ 
+#define PATH "texture.bmp"  //æ‰“å¼€çš„æ–‡ä»¶è·¯å¾„ 
 
-//ÅĞ¶ÏÊÇ·ñÊÇÎ»Í¼,ÔÚ0-1×Ö½Ú 
+//åˆ¤æ–­æ˜¯å¦æ˜¯ä½å›¾,åœ¨0-1å­—èŠ‚ 
 int IsBitMap (FILE *fp) {
 	unsigned short s;
 	fseek (fp, 0, SEEK_SET);
@@ -18,7 +18,7 @@ int IsBitMap (FILE *fp) {
 		return 0;
 }
 
-//»ñµÃÍ¼Æ¬µÄ¿í¶È,ÔÚ18-21×Ö½Ú 
+//è·å¾—å›¾ç‰‡çš„å®½åº¦,åœ¨18-21å­—èŠ‚ 
 long getWidth (FILE *fp) {
 	long width;
 	fseek (fp, 18L, SEEK_SET);
@@ -26,7 +26,7 @@ long getWidth (FILE *fp) {
 	return width;
 }
 
-//»ñµÃÍ¼Æ¬µÄ¸ß¶È £¬ÔÚ22-25×Ö½Ú 
+//è·å¾—å›¾ç‰‡çš„é«˜åº¦ ï¼Œåœ¨22-25å­—èŠ‚ 
 long getHeight (FILE *fp) {
 	long height;
 	fseek (fp, 22L, SEEK_SET);
@@ -34,7 +34,7 @@ long getHeight (FILE *fp) {
 	return height;
 }
 
-//»ñµÃÃ¿¸öÏñËØµÄÎ»Êı,ÔÚ28-29×Ö½Ú 
+//è·å¾—æ¯ä¸ªåƒç´ çš„ä½æ•°,åœ¨28-29å­—èŠ‚ 
 unsigned short getBit (FILE *fp) {
 	unsigned short bit;
 	fseek (fp, 28, SEEK_SET);
@@ -42,7 +42,7 @@ unsigned short getBit (FILE *fp) {
 	return bit;
 }
 
-//»ñµÃÊı¾İµÄÆğÊ¼Î»ÖÃ
+//è·å¾—æ•°æ®çš„èµ·å§‹ä½ç½®
 unsigned int getOffSet (FILE *fp) {
 	unsigned int OffSet;
 	fseek (fp, 10L, SEEK_SET);
@@ -50,7 +50,7 @@ unsigned int getOffSet (FILE *fp) {
 	return OffSet;
 }
 
-//»ñµÃÍ¼ÏñµÄÊı¾İ
+//è·å¾—å›¾åƒçš„æ•°æ®
 void getData (FILE* fp, unsigned char *r, unsigned char *g, unsigned char *b) {
 	int i, j = 0;
 	int stride;
@@ -59,11 +59,11 @@ void getData (FILE* fp, unsigned char *r, unsigned char *g, unsigned char *b) {
 	height = getHeight (fp);
 	width = getWidth (fp);
 
-	fseek (fp, getOffSet (fp), SEEK_SET);	//ÕÒµ½Î»Í¼µÄÊı¾İÇø 
+	fseek (fp, getOffSet (fp), SEEK_SET);	//æ‰¾åˆ°ä½å›¾çš„æ•°æ®åŒº 
 
-	stride = (24 * width) / 8;	//¶ÔÆë,¼ÆËãÒ»¸öwidthÓĞ¶àÉÙ¸ö8Î» 
-	stride = stride / 4 * 4;		//È¡ËÄµÄ±¶Êı r,g,b,alph 
-									//Ğ´ÈëÊı×é 
+	stride = (24 * width) / 8;	//å¯¹é½,è®¡ç®—ä¸€ä¸ªwidthæœ‰å¤šå°‘ä¸ª8ä½ 
+	stride = stride / 4 * 4;		//å–å››çš„å€æ•° r,g,b,alph 
+									//å†™å…¥æ•°ç»„ 
 	pix = (unsigned char *)malloc (stride);
 	for (j = 0; j<height; j++) {
 		fread (pix, 1, stride, fp);
